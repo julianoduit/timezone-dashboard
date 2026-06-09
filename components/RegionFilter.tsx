@@ -23,7 +23,7 @@ export function RegionFilter({ value, onChange }: RegionFilterProps) {
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="min-w-[180px] cursor-pointer rounded-lg border px-4 py-3 outline-none transition-colors"
+      className="min-w-45 cursor-pointer rounded-lg border px-4 py-3 outline-none transition-colors"
       style={{
         backgroundColor: "var(--card-bg)",
         borderColor: "var(--border-color)",

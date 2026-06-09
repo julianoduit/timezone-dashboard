@@ -12,7 +12,7 @@ export function SearchInput({ value, onChange }: SearchInputProps) {
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder="Pesquisar por cidade, estado ou país..."
-      className="flex-1 min-w-[250px] rounded-lg border px-4 py-3 outline-none transition-colors"
+      className="flex-1 min-w-62.5 rounded-lg border px-4 py-3 outline-none transition-colors"
       style={{
         backgroundColor: "var(--card-bg)",
         borderColor: "var(--border-color)",
