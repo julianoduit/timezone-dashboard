@@ -25,7 +25,7 @@ export function isLocalBusinessHours(tz: string): boolean {
       endHour = 17;
     }
 
-    const middleEastTzs = ["Asia/Riyadh", "Asia/Dubai", "Asia/Qatar", "Asia/Kuwait"];
+    const middleEastTzs = ["Asia/Riyadh", "Asia/Dubai", "Asia/Qatar", "Asia/Kuwait", "Asia/Bahrain", "Asia/Aden", "Asia/Muscat"];
     if (middleEastTzs.some((me) => tz.includes(me))) {
       if (day === "Fri" || day === "Sat") return false;
     } else {

@@ -33,6 +33,7 @@ export function Dashboard({ initialData }: DashboardProps) {
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
     if (searchQuery.trim() === "") {
+      setFetchedResults(null);
       return;
     }
 
@@ -42,7 +43,7 @@ export function Dashboard({ initialData }: DashboardProps) {
           `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(searchQuery.trim())}&count=100&language=pt&format=json`,
         );
         const data = await res.json();
-        setFetchedResults((data.results as TimezoneLocation[]) ?? []);
+        setFetchedResults(Array.isArray(data.results) ? (data.results as TimezoneLocation[]) : []);
       } catch {
         // keep current data on network error
       }
