@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { Header } from "./Header";
 import { TimezoneGrid } from "./TimezoneGrid";
 import type { TimezoneLocation } from "@/types/timezone";
@@ -10,11 +10,17 @@ interface DashboardProps {
 }
 
 export function Dashboard({ initialData }: DashboardProps) {
-  const [currentData, setCurrentData] = useState<TimezoneLocation[]>(initialData);
+  const [fetchedResults, setFetchedResults] = useState<TimezoneLocation[] | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRegion, setSelectedRegion] = useState("all");
   const [businessHoursActive, setBusinessHoursActive] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Derive displayed data: use fetched results when a query is active, otherwise fall back to initialData
+  const currentData = useMemo(
+    () => (searchQuery.trim() !== "" && fetchedResults !== null ? fetchedResults : initialData),
+    [searchQuery, fetchedResults, initialData],
+  );
 
   useEffect(() => {
     document.documentElement.setAttribute(
@@ -27,7 +33,6 @@ export function Dashboard({ initialData }: DashboardProps) {
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
     if (searchQuery.trim() === "") {
-      setCurrentData(initialData);
       return;
     }
 
@@ -37,7 +42,7 @@ export function Dashboard({ initialData }: DashboardProps) {
           `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(searchQuery.trim())}&count=100&language=pt&format=json`,
         );
         const data = await res.json();
-        setCurrentData((data.results as TimezoneLocation[]) ?? []);
+        setFetchedResults((data.results as TimezoneLocation[]) ?? []);
       } catch {
         // keep current data on network error
       }
@@ -46,7 +51,7 @@ export function Dashboard({ initialData }: DashboardProps) {
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
-  }, [searchQuery, initialData]);
+  }, [searchQuery]);
 
   return (
     <div>
