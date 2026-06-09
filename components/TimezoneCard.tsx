@@ -10,6 +10,7 @@ interface TimezoneCardProps {
 export function TimezoneCard({ location }: TimezoneCardProps) {
   const [time, setTime] = useState("--:--:--");
   const [date, setDate] = useState("--/--/----");
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     function tick() {
@@ -51,10 +52,10 @@ export function TimezoneCard({ location }: TimezoneCardProps) {
     <div className="flex flex-col gap-2 rounded-xl border p-6 transition-transform duration-200 hover:-translate-y-0.5"
       style={{
         backgroundColor: "var(--card-bg)",
-        borderColor: "var(--border-color)",
+        borderColor: isHovered ? "var(--accent)" : "var(--border-color)",
       }}
-      onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--accent)")}
-      onMouseLeave={(e) => (e.currentTarget.style.borderColor = "var(--border-color)")}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <span
         className="overflow-hidden text-ellipsis whitespace-nowrap text-xs font-semibold uppercase tracking-wider"
