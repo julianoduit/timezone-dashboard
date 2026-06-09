@@ -33,7 +33,6 @@ export function Dashboard({ initialData }: DashboardProps) {
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
     if (searchQuery.trim() === "") {
-      setFetchedResults(null);
       return;
     }
 
